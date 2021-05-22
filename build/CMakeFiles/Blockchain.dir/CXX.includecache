@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/teddy/Dev/Crypto/CRYPTOKATON/include/Blockchain.h
+iostream
+-
+sstream
+-
+iomanip
+-
+
+/home/teddy/Dev/Crypto/CRYPTOKATON/src/Blockchain.cc
+openssl/sha.h
+/home/teddy/Dev/Crypto/CRYPTOKATON/src/openssl/sha.h
+../include/Blockchain.h
+/home/teddy/Dev/Crypto/CRYPTOKATON/include/Blockchain.h
+
