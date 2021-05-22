@@ -17,14 +17,17 @@ namespace BeerCoin {
         private:
             unsigned long id;
             std::string receiver_key;
-            unsigned long amount;
+            float amount;
             SignedMessage* signed_message;
 
+            std::string _hash;
+
         public:
-            Transaction(SignedMessage* signed_message, unsigned long id, std::string receiver_key, unsigned long amount);
+            Transaction(SignedMessage* signed_message, unsigned long id, std::string receiver_key, float amount);
             ~Transaction();
 
             bool isSignatureValid();
+            std::string getHash();
                 
     };
 }

@@ -5,22 +5,29 @@
 
 namespace BeerCoin {
 
+    typedef struct {
+        std::string miner_pub_key;
+        float value;
+    } MinerReward;
+
     class Block
     {
         private:
-            const unsigned long index;
-            const std::string hash;
-            const long proof;
-            const std::time_t timestamp;
-            const std::string previous_hash;
+            unsigned long index;
+            std::string hash;
+            long proof;
+            std::time_t timestamp;
+            std::string previous_hash;
             std::list<Transaction> transactions;
+            MinerReward minerReward;
 
         public:
-            Block(/* args */);
+            Block(std::string previous_hash);
             ~Block();
 
             bool addTransaction(Transaction transaction);
-            void mineBlock(int difficulty);
+            void mineBlock(int difficulty, std::string miner_pub);
+            bool isFull();
             std::string getHash(); 
     };
 }

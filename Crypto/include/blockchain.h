@@ -9,11 +9,15 @@ namespace BeerCoin {
     private:
         std::list<Block> blocks;
         int difficulty;
+        Block current_block;
+        unsigned long transaction_id;
+
     public:
         Blockchain(/* args */);
         ~Blockchain();
 
-        void addBlock(Block block);
+        bool addTransaction(std::string sender, std::string receiver, std::string signature, float amount, unsigned long id);
+        float getUserBalance(std::string user);
         int getDifficulty();
     };   
 }

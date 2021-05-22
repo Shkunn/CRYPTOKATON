@@ -13,11 +13,17 @@ namespace BeerCoin {
 
         }
 
-        void addBlock(Block block){
+        bool addTransaction(std::string sender, std::string receiver, std::string signature, float amount, unsigned long id) {
+            return false;
+        }
+
+
+        float Blockchain::getValueForUser(std::string user) {
 
         }
-        int getDifficulty(){
 
+        int getDifficulty() {
+            return 4;
         }
     };   
 }
