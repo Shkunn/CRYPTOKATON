@@ -2,6 +2,29 @@
 #include "../include/Blockchain.h"
 
 
+inline size_t Blockchain::size()
+{
+    return chain.size();
+}
+
+inline const Block& Blockchain::operator[](size_t i)
+{
+    if(i >= size())
+    {
+        exit(EXIT_FAILURE);
+    }
+    return chain[i];
+}
+
+bool Block::operator!=(const Block &otherBlock) const
+{
+    return index           !=   otherBlock.index          ||
+           hash            !=   otherBlock.hash           ||
+           previousHash    !=   otherBlock.previousHash   ||
+           timestamp       !=   otherBlock.timestamp      ||
+           data            !=   otherBlock.data;
+}
+
 std::string sha256(const std::string str)
 {
     unsigned            char hash[SHA256_DIGEST_LENGTH];
@@ -30,8 +53,8 @@ const std::string calcHash(int index, std::string previousHash, std::time_t time
 
 const Block Blockchain::generateNewBlock(std::string data)
 {
-    const std::string previousHash = chain[chain.size() - 1].hash;
-    const int nextIndex = (int)chain.size();
+    const std::string previousHash = chain[size() - 1].hash;
+    const int nextIndex = (int)size();
     const time_t nextTimestamp = time(nullptr);
     const std::string nextHash = calcHash(nextIndex, previousHash, nextTimestamp, data);
     const Block newBlock = Block(nextIndex, nextHash, previousHash, nextTimestamp, data);
@@ -39,9 +62,17 @@ const Block Blockchain::generateNewBlock(std::string data)
     return newBlock;
 }
 
-const bool Blockchain::isValid( Block newBlock)
+const std::string calcHash(Block block)
 {
-    Block previousBlock = chain[chain.size() - 1];
+    std::string val   = std::to_string(block.index) + block.previousHash + std::to_string(block.timestamp) + block.data; 
+    std::string input = sha256(val);
+
+    return input;
+}
+
+const bool Blockchain::isValid(Block newBlock)
+{
+    Block previousBlock = chain[size() - 1];
 
     if( previousBlock.index + 1 != newBlock.index )
     {
@@ -55,9 +86,9 @@ const bool Blockchain::isValid( Block newBlock)
 
         return false;
     }
-    else if( calculateHashForBlock(newBlock) != newBlock.hash )
+    else if( calcHash(newBlock) != newBlock.hash )
     {
-        std::cout << "Invalid Hash: "  + calculateHashForBlock(newBlock) + ' vs ' + newBlock.hash << std::endl;
+        std::cout << "Invalid Hash: "  + calcHash(newBlock) << " vs " << newBlock.hash << std::endl;
         
         return false;
     }
@@ -65,18 +96,31 @@ const bool Blockchain::isValid( Block newBlock)
     return true;
 }
 
-const bool Blockchain::isValid(Blockchain newBlockchain)
+const bool Blockchain::isValid(Blockchain &newBlockchain)
 {
     if(newBlockchain.genesis != genesis)
     {
         return false;
     }
 
-    for(size_t i = 1; i < newBlockchain.chain.size(); i++)
+    for(size_t i = 1; i < newBlockchain.size(); i++)
     {
-        if(!isValid(newBlockchain.chain[i]))
+        if(!isValid(newBlockchain[i]))
         {
             return false;
         }
     }
+
+    return true;
 }
+ 
+const bool Blockchain::replace(Blockchain &newBlockchain)
+{
+    if (isValid(newBlockchain) && newBlockchain.size() > chain.size())
+    {
+        chain = newBlockchain.chain;
+        return true;
+    }
+
+    return false;
+} 

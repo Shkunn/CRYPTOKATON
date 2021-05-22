@@ -13,6 +13,8 @@ sstream
 -
 iomanip
 -
+vector
+-
 
 /home/teddy/Dev/Crypto/CRYPTOKATON/main.cc
 iostream
@@ -22,5 +24,11 @@ sstream
 iomanip
 -
 include/Blockchain.h
+/home/teddy/Dev/Crypto/CRYPTOKATON/include/Blockchain.h
+
+/home/teddy/Dev/Crypto/CRYPTOKATON/src/Blockchain.cc
+openssl/sha.h
+/home/teddy/Dev/Crypto/CRYPTOKATON/src/openssl/sha.h
+../include/Blockchain.h
 /home/teddy/Dev/Crypto/CRYPTOKATON/include/Blockchain.h
 

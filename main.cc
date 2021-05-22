@@ -20,4 +20,6 @@ int main(int argc, char **argv)
               << "\tPrevious Hash : " << genesisBlock.previousHash  << "\n"
               << "\tTimestamp     : " << genesisBlock.timestamp     << "\n"
               << "\tData          : " << genesisBlock.data          << "\n";
+
+    return EXIT_SUCCESS;
 }
