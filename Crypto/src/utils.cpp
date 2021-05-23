@@ -6,8 +6,10 @@
 #include <openssl/rsa.h>
 #include <openssl/bio.h>
 #include <openssl/pem.h>
-
 #include <transaction.h>
+
+#define PUBKEY_HEADER "-----BEGIN PUBLIC KEY-----"
+#define PUBKEY_FOOTER "-----END PUBLIC KEY-----"
 
 using namespace std;
 
@@ -16,7 +18,7 @@ namespace BeerCoin {
 	bool check_signature(SignedMessage* msg) {
 		RSA* public_key_;
 		BIO* bo = BIO_new(BIO_s_mem());
-		BIO_write(bo, msg->publicKey.c_str(), msg->publicKey.length());
+		BIO_write(bo, (PUBKEY_HEADER + msg->publicKey + PUBKEY_FOOTER).c_str(), msg->publicKey.length());
 
 		PEM_read_bio_RSA_PUBKEY(bo, &public_key_, 0, 0);
 		int result = RSA_verify(

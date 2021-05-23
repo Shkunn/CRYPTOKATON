@@ -4,6 +4,7 @@
 #include <block.h>
 #include <transaction.h>
 #include <utils.h>
+#include <iostream>
 
 #define MAX_TRANSATIONS_IN_BLOCK 5
 #define MINER_REWARD 1.0 // TODO: programatic way
@@ -13,6 +14,7 @@ namespace BeerCoin {
 
     Block::Block(std::string previous_hash) {
         this->previous_hash = previous_hash;
+        this->proof = -1;
     }
 
     Block::~Block() {
@@ -56,12 +58,45 @@ namespace BeerCoin {
         }
     }
 
-    float Block::getValueAmont() {
+    bool Block::isValid(int difficulty) {
+        for(auto transaction : this->transactions) {
+            if(!transaction.isValid())
+                return false;
+        }
+
+        if(isMined()) {
+            return this->getHash().substr(0, difficulty) == get_constrainst(difficulty);
+        }
+        return true;
+    }
+
+    bool Block::isMined() {
+        return this->proof != -1;
+    }
+
+    float Block::getUserBalance(std::string user) {
         float value = 0;
-        for(auto transaction : this->transactions){
-            value += transaction.getAmount();
+        for(auto transaction : this->transactions) {
+            if(transaction.getReceiverKey() == user) {
+                value += transaction.getAmount();
+            }
+        }
+        if(this->minerReward.miner_pub_key == user) {
+            value += this->minerReward.value;
         }
         return value;
+    }
+
+    void Block::print() {
+        std::cout << "Block : \n" << std::endl;
+        std::cout << "\t index : " +  std::to_string(this->index) + "\n" << std::endl;
+        std::cout << "\t previousHash : " + this->previous_hash + "\n" << std::endl;
+        std::cout << "\t hash : " + this->hash + "\n" << std::endl;
+        std::cout << "\t proof : " +  std::to_string(this->proof) + "\n" << std::endl;
+        std::cout << "\t timestamp : " +  std::to_string(this->timestamp) + "\n" << std::endl;
+        for (auto transaction : this->transactions) {
+            transaction.print();
+        }
     }
 
     std::string Block::getHash() {
@@ -74,7 +109,9 @@ namespace BeerCoin {
             transactions_hash +
             std::to_string(this->proof) +
             std::to_string(this->timestamp) +
-            this->previous_hash
+            this->previous_hash +
+            this->minerReward.miner_pub_key +
+            std::to_string(this->minerReward.value)
         );
     }
 }

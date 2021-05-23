@@ -26,8 +26,13 @@ namespace BeerCoin {
             Transaction(SignedMessage* signed_message, unsigned long id, std::string receiver_key, float amount);
             ~Transaction();
 
+            bool isMessageValid();
+            bool isValid();
+            void print();
+
             bool isSignatureValid();
             float getAmount();
+            std::string getReceiverKey();
             std::string getHash();
                 
     };

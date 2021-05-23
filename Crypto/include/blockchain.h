@@ -23,8 +23,10 @@ namespace BeerCoin {
                                 unsigned long id
                                 );
 
+            bool isValid(int difficulty);
             float getUserBalance(std::string user);
             int getDifficulty();
+            void print();
             void addBlock(Block new_block);
         };   
 }
