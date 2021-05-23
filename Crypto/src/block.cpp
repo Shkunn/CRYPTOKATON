@@ -23,7 +23,10 @@ namespace BeerCoin {
         if(! transaction.isSignatureValid())
             return false;
         
-        if(this->transactions.size() >= MAX_TRANSATIONS_IN_BLOCK)
+        // if(this->transactions.size() >= MAX_TRANSATIONS_IN_BLOCK)
+        //     return false;
+        
+        if(isFull())
             return false;
 
         this->transactions.push_back(transaction);
@@ -31,7 +34,7 @@ namespace BeerCoin {
     }
 
     bool Block::isFull() {
-        return this->transactions.size() == MAX_TRANSATIONS_IN_BLOCK;
+        return this->transactions.size() >= MAX_TRANSATIONS_IN_BLOCK;
     }
 
     std::string get_constrainst(int difficulty){
@@ -51,6 +54,14 @@ namespace BeerCoin {
             this->proof += 1;
             hash_to_fund = getHash();
         }
+    }
+
+    float Block::getValueAmont() {
+        float value = 0;
+        for(auto transaction : this->transactions){
+            value += transaction.getAmount();
+        }
+        return value;
     }
 
     std::string Block::getHash() {

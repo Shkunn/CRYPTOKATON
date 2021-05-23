@@ -6,9 +6,9 @@ namespace BeerCoin {
 
     typedef struct
     {
-        const std::string message;
-        const std::string signature;
-        const std::string publicKey;
+        std::string message;
+        std::string signature;
+        std::string publicKey;
     } SignedMessage;
     
 
@@ -27,6 +27,7 @@ namespace BeerCoin {
             ~Transaction();
 
             bool isSignatureValid();
+            float getAmount();
             std::string getHash();
                 
     };

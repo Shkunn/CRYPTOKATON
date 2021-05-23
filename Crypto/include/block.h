@@ -28,6 +28,7 @@ namespace BeerCoin {
             bool addTransaction(Transaction transaction);
             void mineBlock(int difficulty, std::string miner_pub);
             bool isFull();
+            float getValueAmont();
             std::string getHash(); 
     };
 }

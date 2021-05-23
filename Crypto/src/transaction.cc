@@ -22,7 +22,11 @@ namespace BeerCoin {
 
     bool Transaction::isSignatureValid() {
         return checkSignature(this->signed_message);
-    }        
+    } 
+
+    float Transaction::getAmount(){
+        return amount;
+    }       
 
     std::string Transaction::getHash() {
         if(this->_hash == "")
