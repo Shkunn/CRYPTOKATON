@@ -1,40 +1,11 @@
-#include <iomanip>
-#include <openssl/sha.h>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "../include/packet.h"
+#include "../include/utils.h"
 
 namespace CoffeeBean {
-
-	const char* hexChar2Bin(char c) {
-		switch(toupper(c)) {
-			case '0': return "0000";
-			case '1': return "0001";
-			case '2': return "0010";
-			case '3': return "0011";
-			case '4': return "0100";
-			case '5': return "0101";
-			case '6': return "0110";
-			case '7': return "0111";
-			case '8': return "1000";
-			case '9': return "1001";
-			case 'A': return "1010";
-			case 'B': return "1011";
-			case 'C': return "1100";
-			case 'D': return "1101";
-			case 'E': return "1110";
-			case 'F': return "1111";
-		}
-		return nullptr;
-	}
-
-	std::string hex2Bin(const std::string &hex) {
-		std::string bin;
-		for(auto i = 0; i != hex.length(); ++i)
-			bin += hexChar2Bin(hex[i]);
-		return bin;
-	}
 
 	const bool Packet::match() const {
 		std::string hash = roast(this);
@@ -126,23 +97,15 @@ namespace CoffeeBean {
 		std::string timestamp_str  = std::to_string(timestamp);
 		std::string difficulty_str = std::to_string(difficulty);
 		std::string nonce_str      = std::to_string(nonce);
-		
-		unsigned char hash[SHA256_DIGEST_LENGTH];
-			
-		SHA256_CTX sha256;
-		SHA256_Init(&sha256);
-		SHA256_Update(&sha256,      index_str.c_str(),      index_str.size());		
-		SHA256_Update(&sha256,           prev.c_str(),           prev.size());		
-		SHA256_Update(&sha256,  timestamp_str.c_str(),  timestamp_str.size());		
-		SHA256_Update(&sha256,           data.c_str(),           data.size());
-		SHA256_Update(&sha256, difficulty_str.c_str(), difficulty_str.size());
-		SHA256_Update(&sha256,      nonce_str.c_str(),      nonce_str.size());
-		SHA256_Final(hash, &sha256);
 
-		std::stringstream ss;
-		for(int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-			ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
-		return ss.str();		
+		return sha256(
+			nonce_str      +
+			index_str      +
+			prev           +
+			timestamp_str  +
+			data           +
+			difficulty_str
+		);
 	}
 
 }

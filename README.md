@@ -28,3 +28,7 @@ Every Crypto related word possess a Coffee equivalent.
 |Mine          |Grind      |
 |Validate      |Taste      |
 |Transaction   |Transaction|
+
+## Aknowledgements
+
+Adapted from [Naivecoin: a tutorial for building a cryptocurrency](http://lhartikk.github.io/)
