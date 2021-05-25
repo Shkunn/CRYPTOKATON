@@ -1,1 +1,0 @@
-/usr/bin/c++   -Wall   -O3 -march=native -O3 -DNDEBUG   CMakeFiles/main.dir/src/Blockchain.cc.o CMakeFiles/main.dir/main.cc.o  -o main  -lcrypto 
