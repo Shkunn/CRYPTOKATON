@@ -7,19 +7,28 @@
 
 int main(int argc, char **argv)
 {
-    std::string data; 
+    Block genesisBlock = {
+        0, 
+        "0",
+        "", 
+        time(nullptr), 
+        "Genesis"
+    };
+
+    genesisBlock.hash = calcHash(genesisBlock);
+
+    // genesisBlock.str();
+
+    Blockchain blockchain = Blockchain(genesisBlock);
+    Block newBlock = blockchain.generateNewBlock("First");
+
+    // newBlock.str();
+
+    newBlock.mine();
+
+    blockchain.chain.push_back(newBlock);
+
+    blockchain.str();
     
-    std::cout << "Type your data: ";
-    std::cin >> data;
-
-    const Block genesisBlock = Block(0, "0", "0", time(nullptr), data);
-
-    std::string hash = calcHash(genesisBlock.index, genesisBlock.previousHash, genesisBlock.timestamp, genesisBlock.data);
-    std::cout << "\nBLOCK\n" 
-              << "\tINDEX         : " << genesisBlock.index         << "\n"     
-              << "\tPrevious Hash : " << genesisBlock.previousHash  << "\n"
-              << "\tTimestamp     : " << genesisBlock.timestamp     << "\n"
-              << "\tData          : " << genesisBlock.data          << "\n";
-
     return EXIT_SUCCESS;
 }
